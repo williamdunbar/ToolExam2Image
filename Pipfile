@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+opencv-python = "*"
+numpy = "*"
+pdf2image = "*" 
+pillow = "*"
+pyqt5 = "*"
+pnglatex = "*"
+pypdftk = "*"
+pykeen = "*"
+latex = "*"
+pandoc = "*"
+wmi = "*"
+docx = "*"
+python-docx = "*"
+pyqt5-tools = "*"
+auto-py-to-exe = "*"
+pdflatex = "*"
+pywin32 = "*"
+
+[dev-packages]
+pyinstaller = "*"

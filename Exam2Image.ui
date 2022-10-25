@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>771</width>
+    <height>377</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Times New Roman</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="exceprt_lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>130</y>
+      <width>551</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+   border: 2px solid rgb(0, 170, 0);
+    border-radius: 15px;
+    color: rgb(0, 0, 0);
+	font: italic 9pt &quot;Times New Roman&quot;;
+    padding-left:20px;
+    padding-right:20px;
+    background-color: rgb(255, 255, 255);
+}
+
+QLineEdit:hover{
+    border: 2px solid rgb(0, 255, 127);
+}
+
+QLineEdit:focus{
+    border: 2px solid rgb(0, 170, 127);
+}</string>
+    </property>
+    <property name="placeholderText">
+     <string>Nhận dạng đoạn trích. (Mặc định: Đoạn trích)</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="apply_btn">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>130</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton:hover{
+    border: 1px solid rgb(0, 181, 0);
+	background-color: rgb(190, 254, 190)
+}
+
+QPushButton{
+	font: 70 9pt &quot;Times New Roman&quot;;
+	border: 1px solid rgb(0, 170, 0);
+    border-radius: 6px;
+	background-color: rgb(255, 255, 255)
+}</string>
+    </property>
+    <property name="text">
+     <string>Áp dụng</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="convert_btn">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>230</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton:hover{
+    border: 1px solid rgb(0, 181, 0);
+	background-color: rgb(190, 254, 190)
+}
+
+QPushButton{
+	font: 75 9pt &quot;Times New Roman&quot;;
+	border: 1px solid rgb(0, 170, 0);
+    border-radius: 6px;
+	background-color: rgb(255, 255, 255)
+}</string>
+    </property>
+    <property name="text">
+     <string>Chuyển</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>190</y>
+      <width>93</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton:hover{
+    border: 1px solid rgb(0, 181, 0);
+	background-color: rgb(190, 254, 190)
+}
+
+QPushButton{
+	font: 75 9pt &quot;Times New Roman&quot;;
+	border: 1px solid rgb(0, 170, 0);
+    border-radius: 6px;
+	background-color: rgb(255, 255, 255)
+}</string>
+    </property>
+    <property name="text">
+     <string>Tìm kiếm</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="excerpt_label">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>170</y>
+      <width>511</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+    font: italic 9pt Times New Roman;
+    color:rgb(255, 0, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="path_lineEdit">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>210</y>
+      <width>551</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLineEdit{
+   border: 2px solid rgb(0, 170, 0);
+    border-radius: 15px;
+    color: rgb(0, 0, 0);
+	font: italic 9pt &quot;Times New Roman&quot;;
+    padding-left:20px;
+    padding-right:20px;
+    background-color: rgb(255, 255, 255);
+}
+
+QLineEdit:hover{
+    border: 2px solid rgb(0, 255, 127);
+}
+
+QLineEdit:focus{
+    border: 2px solid rgb(0, 170, 127);
+}</string>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+    <property name="placeholderText">
+     <string>Đường dẫn file word</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="notice_label">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>250</y>
+      <width>521</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QLabel{
+    font: italic 9pt Times New Roman;
+    color:rgb(255, 0, 0);
+}</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="ThongTinUngDung">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>310</y>
+      <width>381</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QListWidget{
+	background-color: rgb(191, 255, 191);
+	border: 0px;
+	font: 9pt &quot;Times New Roman&quot;;
+}</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Website: https://cttvnu.edu.vn/</string>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignCenter</set>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Địa chỉ: Xuân Thủy, Cầu Giấy, Hà Nội</string>
+     </property>
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QListWidget" name="ThongTinUngDung_2">
+    <property name="geometry">
+     <rect>
+      <x>380</x>
+      <y>310</y>
+      <width>391</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QListWidget{
+	background-color: rgb(191, 255, 191);
+	border: 0px;
+	font: 9pt &quot;Times New Roman&quot;;
+}</string>
+    </property>
+    <property name="modelColumn">
+     <number>0</number>
+    </property>
+    <property name="uniformItemSizes">
+     <bool>false</bool>
+    </property>
+    <item>
+     <property name="text">
+      <string>Hotline: 0243 754 749</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignCenter</set>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>Email: ctt@vnu.edu.vn</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>Times New Roman</family>
+       <pointsize>9</pointsize>
+       <weight>75</weight>
+       <italic>true</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="textAlignment">
+      <set>AlignCenter</set>
+     </property>
+    </item>
+   </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>771</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QFrame{
+	background-color: rgb(255, 255, 255)
+}</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>-10</y>
+       <width>591</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap>References/Banner.jpg</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

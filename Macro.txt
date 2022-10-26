@@ -122,6 +122,23 @@ Sub T4L_ChuanHoaLaTeX()
     Call repaceTextNoWildcards("\frac", "\dfrac")
     Call repaceTextNoWildcards("\backslash", "\setminus")
 End Sub
+Sub ConvertTablesToImages()
+
+    Dim tbl As Table, rng As Range, i As Integer
+    Dim currentDoc As Document
+    Set currentDoc = ActiveDocument
+    
+    For i = currentDoc.Tables.Count To 1 Step -1
+        Set tbl = currentDoc.Tables(i)
+        Set rng = tbl.Range
+        rng.Collapse Direction:=wdCollapseStart
+        tbl.Range.CopyAsPicture
+        tbl.Delete
+        rng.PasteSpecial DataType:=wdPasteEnhancedMetafile
+        rng.ShapeRange(1).ConvertToInlineShape
+    Next
+
+End Sub
 
 Sub T4L_ChuanHoa()
     Call repaceTextNoWildcards("^p^p^p", "^p^p")
@@ -551,6 +568,7 @@ solon = x
 End Function
 
 Sub W2T_Tool()
+    Call ConvertTablesToImages
     Call T4L_Word2Ex_test
     Call ConvertEquation
     Call Toogle

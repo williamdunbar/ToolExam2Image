@@ -70,7 +70,7 @@ def Read_Latex():
         else:
             detail = "Câu: "+ str(index)
         return List_Excercise, str(err), detail
-    print("Read Latex done !!!")
+    print(">>>ĐÃ PHÂN TÍCH FILE .TEX XONG<<< !!!")
     print("-------------------------")
     return List_Excercise, "", ""
 

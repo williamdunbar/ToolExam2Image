@@ -153,6 +153,6 @@ def Latex2Image(folder_data, List_Excercise ):
         except Exception as err:
             detail = "Câu " + str(i)
             return str(err), detail
-    print("Latex 2 Image done !!!")
+    print(">>>ĐÃ CHUYỂN LATEX THÀNH ẢNH XONG<<<")
     print("-------------------------")
     return "", ""

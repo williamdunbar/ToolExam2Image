@@ -1,3 +1,4 @@
+from fileinput import filename
 import os
 import re
 from turtle import width
@@ -6,6 +7,7 @@ from time import sleep
 from os import path
 import docx
 import xml.etree.ElementTree as ET
+from PIL import Image
 
 path_docx_file = "./Macro.docx" 
 
@@ -35,14 +37,28 @@ def num_sort(test_string):
 
 def Extract_Image():
     imagenames = []
+    i = 0
+
+    #Xóa ảnh cũ trong "Picture/word/media/"
+    dir = 'Picture/word/media/'
+    for f in os.listdir(dir):
+        os.remove(os.path.join(dir, f))
+
+    #Dùng thư viện zipfile extract ảnh 
     z = zipfile.ZipFile(path_docx_file)
-    # all_files = z.namelist()
-    # print (all_files)
+
     for file in z.filelist:
         if file.filename.startswith('word/media/') :
             imagename = str(file.filename).split('/',2)[2]
-            imagenames.append(imagename)
             z.extract(path="./Picture", member= file.filename)
+            #Xử lỹ các ảnh của đuôi emf
+            if imagename.endswith("emf") :
+                i = i+1
+                newImageNames = "table"+ str(i) + ".jpg"
+                Image.open("Picture/word/media/"+imagename).save("Picture/word/media/"+newImageNames)
+                imagename = newImageNames
+
+            imagenames.append(imagename)
     imagenames.sort(reverse=False,key=num_sort) 
     # print("-----------------")
     # print(imagenames)
@@ -81,7 +97,7 @@ def Read_latex_From_Word_To_Tex(excerpt_detect):
                     tex_input = str(para.text)
                     tex_input, paragraph_input = Fix_Latex(tex_input = tex_input, excerpt_detect=excerpt_detect, paragraph_input = paragraph_input)
                 else:
-                    tex_input = "\\begin{center}\n\\includegraphics[scale = 0.5]{Picture/word/media/"+ imagenames[i] + "}\n\\end{center}\n"
+                    tex_input = "\\begin{center}\n\\includegraphics[width=250px]{Picture/word/media/"+ imagenames[i] + "}\n\\end{center}\n"
                     i += 1
                 paragraph_input.append(tex_input)
             except Exception as err:
@@ -91,7 +107,7 @@ def Read_latex_From_Word_To_Tex(excerpt_detect):
             f.write(element)
         f.write("}\n\\end{ex}")    
     print("Số hình ảnh trong file: "+ str(i))
-    print("Read docx done !!!")
+    print(">>> ĐÃ TÁCH ẢNH XONG <<<")
     print("-------------------------")
     return "", ""
     

@@ -14,7 +14,7 @@ def Excute_Macro(path_docx):
     if(os.path.exists("./Macro.docx") == True):
         os.remove("./Macro.docx")
     error, detail = RunMacro(path_docx)
-    print("-----------------Done-----------------")
+    print(">>>ĐÃ CHẠY MACRO XONG<<<")
 
     return name_docx_file, error, detail
 
@@ -23,7 +23,6 @@ def Excute(path_docx,excerpt_detect):
     name_docx_file, error, detail = Excute_Macro(path_docx)
     if(error == "" and detail == ""):
         error1, detail = Read_latex_From_Word_To_Tex(excerpt_detect=excerpt_detect)
-        print(">>>>>>>>>>>>>><<<<<<<<<<<<<<<<<")
         if(error1 == ""):
             List_Excercise, error2, detail = Read_Latex()
             if(error2 == ""):

@@ -2,6 +2,10 @@ Temp.log
 Temp.pdf
 Temp.tex
 Temp.aux
+test.log
+test.pdf
+test.tex
+test.aux
 __pycache__/
 dist/
 env/

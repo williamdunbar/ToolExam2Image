@@ -11,6 +11,10 @@ from PIL import Image
 
 path_docx_file = "./Macro.docx" 
 
+def checkWidthImage(imagePath):
+    img = Image.open(imagePath)
+    # print(img.size[0] )
+    return "" if (img.size[0] < 350) else "width=\\textwidth"
 
 def hasImage(par):
     """get all of the images in a paragraph 
@@ -49,6 +53,7 @@ def Extract_Image():
 
     for file in z.filelist:
         if file.filename.startswith('word/media/') :
+            # print(file.file_size)
             imagename = str(file.filename).split('/',2)[2]
             z.extract(path="./Picture", member= file.filename)
             #Xử lỹ các ảnh của đuôi emf
@@ -59,9 +64,7 @@ def Extract_Image():
                 imagename = newImageNames
 
             imagenames.append(imagename)
-    imagenames.sort(reverse=False,key=num_sort) 
-    # print("-----------------")
-    # print(imagenames)
+
     return imagenames
 
 def Fix_Latex(tex_input, excerpt_detect, paragraph_input):
@@ -83,7 +86,6 @@ def Read_latex_From_Word_To_Tex(excerpt_detect):
         doc = docx.Document(path_docx_file)
     except Exception as err:
         return str(err), "Không tìm thấy file"
-
     i = 0
     if(path.exists("./Official_word_2_tex.tex") == True):
         os.remove("./Official_word_2_tex.tex")
@@ -97,25 +99,22 @@ def Read_latex_From_Word_To_Tex(excerpt_detect):
                     tex_input = str(para.text)
                     tex_input, paragraph_input = Fix_Latex(tex_input = tex_input, excerpt_detect=excerpt_detect, paragraph_input = paragraph_input)
                 else:
-                    tex_input = "\\begin{center}\n\\includegraphics[width=250px]{Picture/word/media/"+ imagenames[i] + "}\n\\end{center}\n"
+                    imagePath = "Picture/word/media/"+ imagenames[i]
+                    checkWidthImage(imagePath=imagePath)
+                    tex_input = "\\begin{center}\n\\includegraphics["+ checkWidthImage(imagePath=imagePath) +"]{" + imagePath + "}\n\\end{center}\n"
                     i += 1
                 paragraph_input.append(tex_input)
             except Exception as err:
-                print(para.text)
+                print("!!! Error at: " + para.text)
                 return str(err), str(para.text)
         for element in paragraph_input:
             f.write(element)
         f.write("}\n\\end{ex}")    
     print("Số hình ảnh trong file: "+ str(i))
-    print(">>> ĐÃ TÁCH ẢNH XONG <<<")
-    print("-------------------------")
+    print("--->>> ĐÃ TÁCH ẢNH XONG <<<---")
     return "", ""
     
 
 
 if __name__ == "__main__":
     Read_latex_From_Word_To_Tex("Đoạn trích")
-
-
-
-    

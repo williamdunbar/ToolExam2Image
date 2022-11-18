@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.7) (preloaded format=pdflatex 2022.7.21)  15 NOV 2022 06:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.7) (preloaded format=pdflatex 2022.7.21)  19 NOV 2022 02:14
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -504,33 +504,43 @@ Underfull \hbox (badness 10000) in paragraph at lines 12--13
 
  []
 
-<Picture/word/media/table2.jpg, id=1, 3868.4525pt x 2763.32375pt>
-File: Picture/word/media/table2.jpg Graphic file (type jpg)
-<use Picture/word/media/table2.jpg>
-Package pdftex.def Info: Picture/word/media/table2.jpg  used on input line 14.
-(pdftex.def)             Requested size: 345.0pt x 246.4115pt.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 17.
 
-Underfull \hbox (badness 10000) in paragraph at lines 16--17
+(C:\Users\lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 17.
 
- []
 
+(C:\Users\lenovo\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 17
+.
+
+(C:\Users\lenovo\AppData\Local\Programs\MiKTeX\tex/latex/jknappen\ursfs.fd
+File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
+)
 Preview: Tightpage -65536 -65536 65536 65536
-[1{C:/Users/lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./Picture
-/word/media/table2.jpg>] (test.aux) ) 
+[1{C:/Users/lenovo/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] (test.aux
+) ) 
 Here is how much of TeX's memory you used:
- 4710 strings out of 478338
- 75099 string characters out of 2836228
- 356276 words of memory out of 3000000
- 23051 multiletter control sequences out of 15000+600000
- 470443 words of font info for 29 fonts, out of 8000000 for 9000
+ 4758 strings out of 478338
+ 75886 string characters out of 2836228
+ 359276 words of memory out of 3000000
+ 23080 multiletter control sequences out of 15000+600000
+ 479600 words of font info for 48 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,5n,76p,251b,286s stack positions out of 10000i,1000n,20000p,200000b,80000s
-{C:/Users/lenovo/AppData/Local/Programs/Mi
-KTeX/fonts/enc/dvips/vntex/t5.enc}<C:/Users/lenovo/AppData/Local/Programs/MiKTe
-X/fonts/type1/vntex/chartervn/bchr8v.pfb>
-Output written on test.pdf (1 page, 577928 bytes).
+ 70i,5n,76p,1576b,173s stack positions out of 10000i,1000n,20000p,200000b,80000s
+{C:/Users/lenovo/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/vntex/t5.enc}
+<C:/Users/lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/chartervn/bchb
+i8v.pfb><C:/Users/lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/vntex/charte
+rvn/bchr8v.pfb><C:/Users/lenovo/AppData/Local/Programs/MiKTeX/fonts/type1/vntex
+/chartervn/bchri8v.pfb><C:/Users/lenovo/AppData/Local/Programs/MiKTeX/fonts/typ
+e1/public/amsfonts/cm/cmr10.pfb>
+Output written on test.pdf (1 page, 59971 bytes).
 PDF statistics:
- 13 PDF objects out of 1000 (max. 8388607)
+ 27 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

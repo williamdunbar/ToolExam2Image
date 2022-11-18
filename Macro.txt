@@ -3,8 +3,8 @@ Sub TextbfAndTextit()
     Selection.Find.Replacement.ClearFormatting
     Selection.Find.Replacement.Font.Bold = True
     With Selection.Find
-        .Text = "\\textbf\{(?{1,})\}"
-        .Replacement.Text = "\1"
+        .text = "\\textbf\{(?{1,})\}"
+        .Replacement.text = "\1"
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -19,8 +19,8 @@ Sub TextbfAndTextit()
     Selection.Find.Replacement.ClearFormatting
     Selection.Find.Replacement.Font.Italic = True
     With Selection.Find
-        .Text = "\\textit\{(?{1,})\}"
-        .Replacement.Text = "\1"
+        .text = "\\textit\{(?{1,})\}"
+        .Replacement.text = "\1"
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -61,10 +61,13 @@ End Sub
 
 Sub repaceTextNoWildcards(findText As String, replaceText As String)
     Selection.Find.ClearFormatting
-    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+    End With
     With Selection.Find
-        .Text = findText
-        .Replacement.Text = replaceText
+        .text = findText
+        .Replacement.text = replaceText
         .Forward = True
         .Wrap = wdFindContinue
         .Format = False
@@ -82,8 +85,8 @@ Sub repaceTextUnderline(findText As String, replaceText As String)
     Selection.Find.Font.Underline = wdUnderlineSingle
     Selection.Find.Replacement.ClearFormatting
     With Selection.Find
-        .Text = findText
-        .Replacement.Text = replaceText
+        .text = findText
+        .Replacement.text = replaceText
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -101,8 +104,8 @@ Sub repaceTextHightlight(findText As String, replaceText As String)
     Selection.Find.Highlight = True
     Selection.Find.Replacement.ClearFormatting
     With Selection.Find
-        .Text = findText
-        .Replacement.Text = replaceText
+        .text = findText
+        .Replacement.text = replaceText
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -166,8 +169,8 @@ Sub T4L_Word2Ex_test()
     Selection.Find.Replacement.ClearFormatting
     Selection.Find.Replacement.Font.Underline = wdUnderlineSingle
     With Selection.Find
-        .Text = "."
-        .Replacement.Text = "."
+        .text = "."
+        .Replacement.text = "."
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -183,8 +186,8 @@ Sub T4L_Word2Ex_test()
     Selection.Find.Replacement.ClearFormatting
     Selection.Find.Replacement.Font.Underline = wdUnderlineSingle
     With Selection.Find
-        .Text = "A"
-        .Replacement.Text = "A"
+        .text = "A"
+        .Replacement.text = "A"
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -196,8 +199,8 @@ Sub T4L_Word2Ex_test()
     End With
     Selection.Find.Execute Replace:=wdReplaceAll
     With Selection.Find
-        .Text = "B"
-        .Replacement.Text = "B"
+        .text = "B"
+        .Replacement.text = "B"
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -209,8 +212,8 @@ Sub T4L_Word2Ex_test()
     End With
     Selection.Find.Execute Replace:=wdReplaceAll
     With Selection.Find
-        .Text = "C"
-        .Replacement.Text = "C"
+        .text = "C"
+        .Replacement.text = "C"
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -222,8 +225,8 @@ Sub T4L_Word2Ex_test()
     End With
     Selection.Find.Execute Replace:=wdReplaceAll
     With Selection.Find
-        .Text = "D"
-        .Replacement.Text = "D"
+        .text = "D"
+        .Replacement.text = "D"
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -244,6 +247,7 @@ Sub T4L_Word2Ex_test()
     Call repaceTextNoWildcards("  .", " ")
     Call repaceTextNoWildcards("  ", " ")
     Call repaceTextNoWildcards("  ", " ")
+    Call repaceTextNoWildcards("_", "\_")
     Call repaceTextNoWildcards("^p ", "^p")
     Call repaceTextNoWildcards("^p ", "^p")
     Call repaceTextNoWildcards(" ^p", "^p")
@@ -354,8 +358,8 @@ Private Sub Do_cot()
 Selection.Find.ClearFormatting
 Selection.Find.Replacement.ClearFormatting
 With Selection.Find
-    .Text = "(^13)([ABCD])(.)"
-        .Replacement.Text = "\1\2\3."
+    .text = "(^13)([ABCD])(.)"
+        .Replacement.text = "\1\2\3."
         .MatchCase = True
         .Wrap = wdFindContinue
         .Execute Replace:=wdReplaceAll, Forward:=True, MatchWildcards:=True
@@ -366,7 +370,7 @@ Tiep:
 danhsach.Find.Execute findText:="A..", Forward:=True
 If danhsach.Find.Found = True Then
     danhsach.Select
-    Selection.Text = "#"
+    Selection.text = "#"
     Selection.EndKey Unit:=wdLine
     x_a = CDbl(Selection.Information(wdHorizontalPositionRelativeToPage))
     Selection.MoveDown Unit:=wdParagraph, Count:=1
@@ -386,39 +390,39 @@ If danhsach.Find.Found = True Then
     Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(6), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
     Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(10), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
     Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(14), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
-    Selection.TypeText Text:=""
+    Selection.TypeText text:=""
     Selection.MoveDown Unit:=wdParagraph, Count:=1
     Selection.TypeBackspace
-    Selection.TypeText Text:=vbTab
+    Selection.TypeText text:=vbTab
     Selection.MoveDown Unit:=wdParagraph, Count:=1
     Selection.TypeBackspace
-    Selection.TypeText Text:=vbTab
+    Selection.TypeText text:=vbTab
     Selection.MoveDown Unit:=wdParagraph, Count:=1
     Selection.TypeBackspace
-    Selection.TypeText Text:=vbTab
+    Selection.TypeText text:=vbTab
     Else
         If (x_o < CDbl(310)) Then
         Selection.ParagraphFormat.TabStops.ClearAll
         Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(10), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
-            Selection.TypeText Text:=""
+            Selection.TypeText text:=""
             Selection.MoveDown Unit:=wdParagraph, Count:=1
             Selection.TypeBackspace
-            Selection.TypeText Text:=vbTab
+            Selection.TypeText text:=vbTab
             Selection.MoveDown Unit:=wdParagraph, Count:=1
         Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(10), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
-            Selection.TypeText Text:=""
+            Selection.TypeText text:=""
             Selection.MoveDown Unit:=wdParagraph, Count:=1
             Selection.TypeBackspace
-            Selection.TypeText Text:=vbTab
+            Selection.TypeText text:=vbTab
         Else
         Selection.ParagraphFormat.TabStops.ClearAll
-            Selection.TypeText Text:=""
+            Selection.TypeText text:=""
             Selection.MoveDown Unit:=wdParagraph, Count:=1
-            Selection.TypeText Text:=""
+            Selection.TypeText text:=""
             Selection.MoveDown Unit:=wdParagraph, Count:=1
-            Selection.TypeText Text:=""
+            Selection.TypeText text:=""
             Selection.MoveDown Unit:=wdParagraph, Count:=1
-            Selection.TypeText Text:=""
+            Selection.TypeText text:=""
             Selection.MoveDown Unit:=wdParagraph, Count:=1
         End If
     End If
@@ -432,8 +436,8 @@ Private Sub Thay_A()
     Selection.Find.ClearFormatting
     Selection.Find.Replacement.ClearFormatting
     With Selection.Find
-        .Text = "#"
-        .Replacement.Text = "A.."
+        .text = "#"
+        .Replacement.text = "A.."
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -443,8 +447,8 @@ Private Sub Thay_A()
     End With
     Selection.Find.Replacement.Font.Underline = wdUnderlineNone
     With Selection.Find
-        .Text = "^t"
-        .Replacement.Text = "^t"
+        .text = "^t"
+        .Replacement.text = "^t"
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -453,8 +457,8 @@ Private Sub Thay_A()
         .Execute Replace:=wdReplaceAll
     End With
     With Selection.Find
-        .Text = "."
-        .Replacement.Text = "."
+        .text = "."
+        .Replacement.text = "."
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -463,8 +467,8 @@ Private Sub Thay_A()
         .Execute Replace:=wdReplaceAll
     End With
     With Selection.Find
-        .Text = " "
-        .Replacement.Text = " "
+        .text = " "
+        .Replacement.text = " "
         .Forward = True
         .Wrap = wdFindContinue
         .Format = True
@@ -476,8 +480,8 @@ Private Sub Thay_A()
     Selection.Find.Font.Underline = wdUnderlineNone
     Selection.Find.Replacement.ClearFormatting
         With Selection.Find
-        .Text = "([A-D]..)"
-        .Replacement.Text = "\1"
+        .text = "([A-D]..)"
+        .Replacement.text = "\1"
         .Replacement.Font.Bold = True
         .Replacement.Font.Color = wdColorBlue
         .Forward = True
@@ -491,8 +495,8 @@ Private Sub Thay_A()
     Selection.Find.Font.Underline = wdUnderlineSingle
     Selection.Find.Replacement.ClearFormatting
         With Selection.Find
-        .Text = "([A-D])"
-        .Replacement.Text = "\1"
+        .text = "([A-D])"
+        .Replacement.text = "\1"
         .Replacement.Font.Bold = True
         .Replacement.Font.Color = wdColorRed
         .Replacement.Font.Underline = wdUnderlineSingle
@@ -507,8 +511,8 @@ Private Sub Thay_A()
     Selection.Find.ClearFormatting
     Selection.Find.Replacement.ClearFormatting
         With Selection.Find
-        .Text = ".."
-        .Replacement.Text = ". "
+        .text = ".."
+        .Replacement.text = ". "
         .Replacement.Font.Bold = True
         .Forward = True
         .Wrap = wdFindContinue
@@ -518,8 +522,8 @@ Private Sub Thay_A()
         .Execute Replace:=wdReplaceAll
     End With
     With Selection.Find
-        .Text = "^13"
-        .Replacement.Text = "^p"
+        .text = "^13"
+        .Replacement.text = "^p"
         .Replacement.Font.Bold = False
         .Replacement.Font.Color = wdColorAutomatic
         .Forward = True
@@ -533,8 +537,8 @@ Private Sub Thay_A()
     Selection.Find.Replacement.ClearFormatting
     With Selection.Find
         .Highlight = True
-        .Text = "^t"
-        .Replacement.Text = "^t"
+        .text = "^t"
+        .Replacement.text = "^t"
         .Replacement.Highlight = False
         .Forward = True
         .Wrap = wdFindContinue
@@ -544,8 +548,8 @@ Private Sub Thay_A()
         .Execute Replace:=wdReplaceAll
     End With
     With Selection.Find
-        .Text = "^32^32"
-        .Replacement.Text = " "
+        .text = "^32^32"
+        .Replacement.text = " "
         .Forward = False
         .Wrap = wdFindContinue
         .Format = False
@@ -566,10 +570,147 @@ Private Function solon(ByVal a As Double, ByVal b As Double) As Double
     End If
 solon = x
 End Function
+Sub ReplaceBold(textFind As String)
+'
+' Macro1 Macro
+'
+'
+    Selection.Find.ClearFormatting
+    Selection.Find.Font.Bold = True
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+    End With
+    With Selection.Find
+        .text = textFind
+        .Replacement.text = textFind
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
+
+Sub ReplaceUnderline(textFind As String)
+'
+' Macro1 Macro
+'
+'
+    Selection.Find.ClearFormatting
+    Selection.Find.Font.Underline = True
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+        .Underline = wdUnderlineNone
+    End With
+    With Selection.Find
+        .text = textFind
+        .Replacement.text = textFind
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
+
+Sub ReplaceFormat()
+Call ReplaceBold("^p\choice^p{@")
+Call ReplaceBold("^p}^p\end{ex}^p^p\begin{ex}^p")
+Call ReplaceBold("}^p\end{ex}^p^p\begin{ex}^p")
+Call ReplaceBold("}^p\end{ex}^p\begin{ex}^p")
+Call ReplaceBold("}^p\doantrich{")
+Call ReplaceBold("@}^p{@")
+Call ReplaceBold("{@")
+Call ReplaceBold("@}")
+Call ReplaceBold("\end{ex}")
+Call ReplaceBold("\begin{ex}")
+Call ReplaceBold("\True")
+Call ReplaceUnderline("\True")
+Call ReplaceBold("@}^p\loigiai{")
+Call ReplaceBold("^p")
+Call ReplaceBold("^t")
+Call ReplaceBold("^l")
+
+End Sub
+Sub Bold2Latex()
+    Selection.Find.ClearFormatting
+    Selection.Find.Font.Bold = True
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find
+        .text = ""
+        .Replacement.text = "\textbf{^&} "
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = True
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
+Sub Italic2Latex()
+    Selection.Find.ClearFormatting
+    Selection.Find.Font.Italic = True
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find
+        .text = ""
+        .Replacement.text = "\textit{^&} "
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = True
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
+
+Sub Underline2Latex()
+    Selection.Find.ClearFormatting
+    Selection.Find.Font.Underline = True
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find
+        .text = ""
+        .Replacement.text = "\underline{^&} "
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = True
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
+
+Sub BIU2Latex()
+    Call Bold2Latex
+    Call Italic2Latex
+    Call Underline2Latex
+End Sub
 
 Sub W2T_Tool()
     Call ConvertTablesToImages
     Call T4L_Word2Ex_test
+    Call ReplaceFormat
+    Call BIU2Latex
     Call ConvertEquation
     Call Toogle
     Call T4L_ChuanHoaLaTeX

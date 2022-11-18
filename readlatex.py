@@ -22,7 +22,8 @@ def Read_Latex():
     index  = 0
     try:
         temp_data = open("./Official_word_2_tex.tex", encoding="utf8").read()
-        first_excerpt = (re.findall(r'\\doantrich{(.*?)}\n\\end{ex}', temp_data, re.S) or [""])[0] # đoạn trích đầu tiên (Không nằm trong excercise)
+        # first_excerpt = (re.findall(r'\\doantrich{(.*?)}\n\\end{ex}', temp_data, re.S) or [""])[0] # đoạn trích đầu tiên (Không nằm trong excercise)
+        first_excerpt = ""
         excercises = re.findall(r'\\begin{ex}(.*?)\\end{ex}', temp_data, re.S)
         # essay_excercises = re.findall(r'\\begin{bt}(.*?)\\end{bt}', temp_data, re.S)
 
@@ -40,7 +41,7 @@ def Read_Latex():
                 temp_answer = (re.findall(r'\\choice(.*?)\\loigiai', excercise, re.S) or [""])[0]
                 temp_excerpt = (re.findall(r'\\doantrich{(.*?)}\n\\end{ex}', excercise, re.S) or [""])[0] # đoạn trích
                 if(temp_excerpt != ""):
-                    excerpt = temp_excerpt.split("\n",2)[2]
+                    excerpt = temp_excerpt
                     temp_reference = (re.findall(r'\\loigiai{(.*?)}\n\\doantrich', excercise, re.S) or [""])[0]
                 else:
                     excerpt = temp_excerpt

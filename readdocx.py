@@ -13,8 +13,8 @@ path_docx_file = "./Macro.docx"
 
 def checkWidthImage(imagePath):
     img = Image.open(imagePath)
-    # print(img.size[0] )
-    return "" if (img.size[0] < 350) else "width=\\textwidth"
+    # print(img.size[1] )
+    return "" if (img.size[0] < 400) else "width=\\textwidth"
 
 def hasImage(par):
     """get all of the images in a paragraph 
@@ -94,13 +94,11 @@ def Read_latex_From_Word_To_Tex(excerpt_detect):
         for para in doc.paragraphs:
             try:
                 isImage = hasImage(para)
-                # print("-------------------------")
                 if(isImage == []):
                     tex_input = str(para.text)
                     tex_input, paragraph_input = Fix_Latex(tex_input = tex_input, excerpt_detect=excerpt_detect, paragraph_input = paragraph_input)
                 else:
                     imagePath = "Picture/word/media/"+ imagenames[i]
-                    checkWidthImage(imagePath=imagePath)
                     tex_input = "\\begin{center}\n\\includegraphics["+ checkWidthImage(imagePath=imagePath) +"]{" + imagePath + "}\n\\end{center}\n"
                     i += 1
                 paragraph_input.append(tex_input)
@@ -109,7 +107,7 @@ def Read_latex_From_Word_To_Tex(excerpt_detect):
                 return str(err), str(para.text)
         for element in paragraph_input:
             f.write(element)
-        f.write("}\n\\end{ex}")    
+        f.write("}\n\\end{ex}")
     print("Số hình ảnh trong file: "+ str(i))
     print("--->>> ĐÃ TÁCH ẢNH XONG <<<---")
     return "", ""
@@ -118,3 +116,9 @@ def Read_latex_From_Word_To_Tex(excerpt_detect):
 
 if __name__ == "__main__":
     Read_latex_From_Word_To_Tex("Đoạn trích")
+
+
+
+
+
+

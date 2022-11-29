@@ -1,580 +1,211 @@
-Sub TextbfAndTextit()
-    Selection.Find.ClearFormatting
-    Selection.Find.Replacement.ClearFormatting
-    Selection.Find.Replacement.Font.Bold = True
-    With Selection.Find
-        .text = "\\textbf\{(?{1,})\}"
-        .Replacement.text = "\1"
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchAllWordForms = False
-        .MatchSoundsLike = False
-        .MatchWildcards = True
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-    Selection.Find.ClearFormatting
-    Selection.Find.Replacement.ClearFormatting
-    Selection.Find.Replacement.Font.Italic = True
-    With Selection.Find
-        .text = "\\textit\{(?{1,})\}"
-        .Replacement.text = "\1"
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchAllWordForms = False
-        .MatchSoundsLike = False
-        .MatchWildcards = True
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-End Sub
-
-Sub Toogle()
-'
-' Toogle Macro
-'
-'
-Selection.WholeStory
-Application.ScreenUpdating = False
-Dim ObjMT As InlineShape
-    For Each ObjMT In ActiveDocument.InlineShapes
-        If ObjMT.Type = wdInlineShapeEmbeddedOLEObject Then
-            ObjMT.Select
-            Application.Run MacroName:="MTCommand_TeXToggle"
-        End If
-    Next
-Application.ScreenUpdating = True
-End Sub
-
-Sub ConvertEquation()
-'
-' ConvertEquation Macro
-'
-'
-Selection.WholeStory
-Application.Run MacroName:="MTCommand_ConvertEqns"
-End Sub
-
-Sub repaceTextNoWildcards(findText As String, replaceText As String)
-    Selection.Find.ClearFormatting
-    With Selection.Find.Replacement.Font
-        .Bold = False
-        .Italic = False
-    End With
-    With Selection.Find
-        .text = findText
-        .Replacement.text = replaceText
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = False
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchWildcards = False
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-End Sub
-
-Sub repaceTextUnderline(findText As String, replaceText As String)
-    Selection.Find.ClearFormatting
-    Selection.Find.Font.Underline = wdUnderlineSingle
-    Selection.Find.Replacement.ClearFormatting
-    With Selection.Find
-        .text = findText
-        .Replacement.text = replaceText
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = True
-        .MatchWholeWord = False
-        .MatchWildcards = False
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-End Sub
-
-Sub repaceTextHightlight(findText As String, replaceText As String)
-    Selection.Find.ClearFormatting
-    Selection.Find.Highlight = True
-    Selection.Find.Replacement.ClearFormatting
-    With Selection.Find
-        .text = findText
-        .Replacement.text = replaceText
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = True
-        .MatchWholeWord = False
-        .MatchWildcards = False
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-End Sub
-Sub T4L_ChuanHoaLaTeX()
-    Call repaceTextNoWildcards("\[", "$")
-    Call repaceTextNoWildcards("\]", "$")
-    Call repaceTextNoWildcards("%", "\%")
-    Call repaceTextNoWildcards("{align}", "{aligned}")
-    Call repaceTextNoWildcards("\frac", "\dfrac")
-    Call repaceTextNoWildcards("\backslash", "\setminus")
-End Sub
+' ------------------Conver Table to Image------------------'
 Sub ConvertTablesToImages()
-
+    
     Dim tbl As Table, rng As Range, i As Integer
     Dim currentDoc As Document
     Set currentDoc = ActiveDocument
     
     For i = currentDoc.Tables.Count To 1 Step -1
         Set tbl = currentDoc.Tables(i)
+        tbl.Borders.Enable = False
         Set rng = tbl.Range
         rng.Collapse Direction:=wdCollapseStart
+        tbl.Borders.Enable = True
+        tbl.Borders(wdBorderBottom).LineStyle = wdLineStyleSingle
+        tbl.Borders(wdBorderHorizontal).LineStyle = wdLineStyleSingle
+        tbl.Borders(wdBorderLeft).LineStyle = wdLineStyleSingle
+        tbl.Borders(wdBorderRight).LineStyle = wdLineStyleSingle
+        tbl.Borders(wdBorderTop).LineStyle = wdLineStyleSingle
+        tbl.Borders(wdBorderVertical).LineStyle = wdLineStyleSingle
         tbl.Range.CopyAsPicture
         tbl.Delete
         rng.PasteSpecial DataType:=wdPasteEnhancedMetafile
         rng.ShapeRange(1).ConvertToInlineShape
     Next
-
+End Sub
+' ------------------Excute TexToggle to convert all to MathType------------------'
+Sub Toogle()
+    Selection.WholeStory
+    Application.ScreenUpdating = False
+    Dim ObjMT As InlineShape
+        For Each ObjMT In ActiveDocument.InlineShapes
+            If ObjMT.Type = wdInlineShapeEmbeddedOLEObject Then
+                ObjMT.Select
+                Application.Run MacroName:="MTCommand_TeXToggle"
+            End If
+        Next
+    Application.ScreenUpdating = True
+End Sub
+' ------------------Excute to convert Mathtype to Latex------------------'
+Sub ConvertEquation()
+    Selection.WholeStory
+    Application.Run MacroName:="MTCommand_ConvertEqns"
+End Sub
+' ------------------Find and replace words------------------'
+Sub ReplaceTextNoWildcards(findText As String, replaceText As String)
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+        .Underline = wdUnderlineNone
+        .SmallCaps = False
+        .AllCaps = False
+        .Color = wdColorAutomatic
+    End With
+    With Selection.Find
+        .text = findText
+        .Replacement.text = replaceText
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
+' ------------------Find and replace underline word------------------'
+Sub replaceTextUnderline(findText As String, replaceText As String)
+    Selection.Find.ClearFormatting
+    Selection.Find.Font.Underline = wdUnderlineSingle
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+        .Underline = wdUnderlineNone
+        .Color = wdColorAutomatic
+    End With
+    With Selection.Find
+        .text = findText
+        .Replacement.text = replaceText
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = True
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
+' ------------------Standard latex------------------'
+Sub T4L_ChuanHoaLaTeX()
+    Call ReplaceTextNoWildcards("\[", "$")
+    Call ReplaceTextNoWildcards("\]", "$")
+    Call ReplaceTextNoWildcards("%", "\%")
+    Call ReplaceTextNoWildcards("{align}", "{aligned}")
+'    Call ReplaceTextNoWildcards("\frac", "\dfrac")
+    Call ReplaceTextNoWildcards("\backslash", "\setminus")
 End Sub
 
 Sub T4L_ChuanHoa()
-    Call repaceTextNoWildcards("^p^p^p", "^p^p")
-    Call repaceTextNoWildcards(" ,", ",")
-    Call repaceTextNoWildcards(" .", ".")
-    Call repaceTextNoWildcards(" ;", ";")
-    Call repaceTextNoWildcards(" :", ":")
-    Call repaceTextNoWildcards("{ ", "{")
-    Call repaceTextNoWildcards("^p}", "}")
-    Call repaceTextNoWildcards(" }", "}")
-    Call repaceTextNoWildcards("}^p\end{ex}", "^p}^p\end{ex}")
-    Call repaceTextNoWildcards("^p^p}^p\end{ex}", "^p}^p\end{ex}")
-    Call repaceTextNoWildcards(" ^p@}", "@}")
-    Call repaceTextNoWildcards(".}", "}")
-
+    Call ReplaceTextNoWildcards("^p^p^p", "^p^p")
+    Call ReplaceTextNoWildcards(" ,", ",")
+    Call ReplaceTextNoWildcards(" .", ".")
+    Call ReplaceTextNoWildcards(" ;", ";")
+    Call ReplaceTextNoWildcards(" :", ":")
+    Call ReplaceTextNoWildcards("{ ", "{")
+    Call ReplaceTextNoWildcards("^p}", "}")
+    Call ReplaceTextNoWildcards(" }", "}")
+    Call ReplaceTextNoWildcards("}^p\end{ex}", "^p}^p\end{ex}")
+    Call ReplaceTextNoWildcards("^p^p}^p\end{ex}", "^p}^p\end{ex}")
+    Call ReplaceTextNoWildcards(" ^p@}", "@}")
+    Call ReplaceTextNoWildcards(".}", "}")
 End Sub
 
-
-Sub T4L_Word2Ex_test()
-'
-' T4L_Word2Ex_test Macro
-'
-'
-    Selection.Find.ClearFormatting
-    Selection.Find.Replacement.ClearFormatting
-    Selection.Find.Replacement.Font.Underline = wdUnderlineSingle
-    With Selection.Find
-        .text = "."
-        .Replacement.text = "."
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchWildcards = False
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-    Selection.Find.ClearFormatting
-    Selection.Find.Font.Color = wdColorRed
-    Selection.Find.Replacement.ClearFormatting
-    Selection.Find.Replacement.Font.Underline = wdUnderlineSingle
-    With Selection.Find
-        .text = "A"
-        .Replacement.text = "A"
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchWildcards = False
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-    With Selection.Find
-        .text = "B"
-        .Replacement.text = "B"
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchWildcards = False
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-    With Selection.Find
-        .text = "C"
-        .Replacement.text = "C"
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchWildcards = False
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
-    With Selection.Find
-        .text = "D"
-        .Replacement.text = "D"
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWholeWord = False
-        .MatchWildcards = False
-        .MatchSoundsLike = False
-        .MatchAllWordForms = False
-    End With
-    Selection.Find.Execute Replace:=wdReplaceAll
+Sub T4L_MainConvert()
     Selection.WholeStory
     Selection.Range.ListFormat.ConvertNumbersToText
-    Call repaceTextNoWildcards("    ", " ")
-    Call repaceTextNoWildcards("    .", " ")
-    Call repaceTextNoWildcards("   ", " ")
-    Call repaceTextNoWildcards("   .", " ")
-    Call repaceTextNoWildcards("  ", " ")
-    Call repaceTextNoWildcards("  .", " ")
-    Call repaceTextNoWildcards("  ", " ")
-    Call repaceTextNoWildcards("  ", " ")
-    Call repaceTextNoWildcards("_", "\_")
-    Call repaceTextNoWildcards("^p ", "^p")
-    Call repaceTextNoWildcards("^p ", "^p")
-    Call repaceTextNoWildcards(" ^p", "^p")
-    Call repaceTextNoWildcards(" ^p", "^p")
-    Call repaceTextNoWildcards("^p ", "^p")
-    Call repaceTextNoWildcards("^t ", "^t")
-    Call repaceTextNoWildcards(" ^t", "^t")
-    Call repaceTextUnderline("A.", "A.\True")
-    Call repaceTextUnderline("B.", "B.\True")
-    Call repaceTextUnderline("C.", "C.\True")
-    Call repaceTextUnderline("D.", "D.\True")
+    Call ReplaceTextNoWildcards("    ", " ")
+    Call ReplaceTextNoWildcards("    .", " ")
+    Call ReplaceTextNoWildcards("   ", " ")
+    Call ReplaceTextNoWildcards("   .", " ")
+    Call ReplaceTextNoWildcards("  ", " ")
+    Call ReplaceTextNoWildcards("  .", " ")
+    Call ReplaceTextNoWildcards("  ", " ")
+    Call ReplaceTextNoWildcards("  ", " ")
+    Call ReplaceTextNoWildcards("_", "\_")
+    Call ReplaceTextNoWildcards("^p ", "^p")
+    Call ReplaceTextNoWildcards("^p ", "^p")
+    Call ReplaceTextNoWildcards(" ^p", "^p")
+    Call ReplaceTextNoWildcards(" ^p", "^p")
+    Call ReplaceTextNoWildcards("^p ", "^p")
+    Call ReplaceTextNoWildcards("^t ", "^t")
+    Call ReplaceTextNoWildcards(" ^t", "^t")
     
-    Call repaceTextHightlight("A.", "A.\True")
-    Call repaceTextHightlight("B.", "B.\True")
-    Call repaceTextHightlight("C.", "C.\True")
-    Call repaceTextHightlight("D.", "D.\True")
-    Call repaceTextNoWildcards("\True\True", "\True")
-    Call repaceTextNoWildcards("^tA.", "^p\choice^p{@")
-    Call repaceTextNoWildcards("^lA.", "^p\choice^p{@")
-    Call repaceTextNoWildcards("^pA.", "^p\choice^p{@")
-    Call repaceTextNoWildcards("^p^tA.", "^p\choice^p{@")
-    Call repaceTextNoWildcards("^t^lA.", "^p\choice^p{@")
-    Call repaceTextNoWildcards("^p^lA.", "^p\choice^p{@")
-    Call repaceTextNoWildcards("^p^t^lA.", "^p\choice^p{@")
+    Call replaceTextUnderline("A.", "A.\True")
+    Call replaceTextUnderline("B.", "B.\True")
+    Call replaceTextUnderline("C.", "C.\True")
+    Call replaceTextUnderline("D.", "D.\True")
+    Call replaceTextUnderline("A", "A.\True")
+    Call replaceTextUnderline("B", "B.\True")
+    Call replaceTextUnderline("C", "C.\True")
+    Call replaceTextUnderline("D", "D.\True")
     
-    Call repaceTextNoWildcards("^t^t^tB.", "@}^p{@")
-    Call repaceTextNoWildcards("^t^tB.", "@}^p{@")
-    Call repaceTextNoWildcards("^p^tB.", "@}^p{@")
-    Call repaceTextNoWildcards("^tB.", "@}^p{@")
-    Call repaceTextNoWildcards("^pB.", "@}^p{@")
-    Call repaceTextNoWildcards("^p B.", "@}^p{@")
+    Call ReplaceTextNoWildcards("\True\True", "\True")
+    Call ReplaceTextNoWildcards("^tA.", "^p\choice^p{@")
+    Call ReplaceTextNoWildcards("^lA.", "^p\choice^p{@")
+    Call ReplaceTextNoWildcards("^pA.", "^p\choice^p{@")
+    Call ReplaceTextNoWildcards("^p^tA.", "^p\choice^p{@")
+    Call ReplaceTextNoWildcards("^t^lA.", "^p\choice^p{@")
+    Call ReplaceTextNoWildcards("^p^lA.", "^p\choice^p{@")
+    Call ReplaceTextNoWildcards("^p^t^lA.", "^p\choice^p{@")
     
-    Call repaceTextNoWildcards("^p^tC.", "@}^p{@")
-    Call repaceTextNoWildcards("^tC.", "@}^p{@")
-    Call repaceTextNoWildcards("^pC.", "@}^p{@")
-    Call repaceTextNoWildcards("^p C.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^t^t^tB.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^t^tB.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^p^tB.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^tB.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^pB.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^p B.", "@}^p{@")
     
-    Call repaceTextNoWildcards("^t^t^tD.", "@}^p{@")
-    Call repaceTextNoWildcards("^t^tD.", "@}^p{@")
-    Call repaceTextNoWildcards("^p^tD.", "@}^p{@")
-    Call repaceTextNoWildcards("^tD.", "@}^p{@")
-    Call repaceTextNoWildcards("^pD.", "@}^p{@")
-    Call repaceTextNoWildcards("^p D.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^p^tC.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^tC.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^pC.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^p C.", "@}^p{@")
     
-    Call repaceTextNoWildcards("^pL" & ChrW(7901) & "i gi" & ChrW(7843) & "i", "@}^p\loigiai{")
-    Call repaceTextNoWildcards("H" & ChrW(432) & ChrW(7899) & "ng d" & ChrW(7851) & "n gi" & _
-             ChrW(7843) & "i", "@}^p\loigiai{")
-    Call repaceTextNoWildcards(ChrW(272) & "oa" & ChrW(803) & "n tri" & ChrW(769 _
+    Call ReplaceTextNoWildcards("^t^t^tD.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^t^tD.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^p^tD.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^tD.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^pD.", "@}^p{@")
+    Call ReplaceTextNoWildcards("^p D.", "@}^p{@")
+    
+    Call ReplaceTextNoWildcards("^pL" & ChrW(7901) & "i gi" & ChrW(7843) & "i", "@}^p\loigiai{")
+    Call ReplaceTextNoWildcards("L" & ChrW(7901) & "i gi" & ChrW(7843) & "i", "@}^p\loigiai{")
+    Call ReplaceTextNoWildcards("L" & ChrW(417) & ChrW(768) & "i gia" & ChrW(777) & "i", "@}^p\loigiai{")
+    Call ReplaceTextNoWildcards(ChrW(272) & "oa" & ChrW(803) & "n tri" & ChrW(769 _
 ) & "ch", "}^p\doantrich{")
-    Call repaceTextNoWildcards(ChrW(273) & "oa" & ChrW(803) & "n tri" & ChrW(769 _
+    Call ReplaceTextNoWildcards(ChrW(273) & "oa" & ChrW(803) & "n tri" & ChrW(769 _
 ) & "ch", "}^p\doantrich{")
-    Call repaceTextNoWildcards("Câu ^#^#^#", "Câu 1")
-    Call repaceTextNoWildcards("Câu ^#^#", "Câu 1")
-    Call repaceTextNoWildcards("Câu ^#", "Câu 1")
-    Call repaceTextNoWildcards("Câu 1:", "Câu 1.")
-    Call repaceTextNoWildcards("Bài ^#^#^#", "Câu 1")
-    Call repaceTextNoWildcards("Bài ^#^#", "Câu 1")
-    Call repaceTextNoWildcards("Bài ^#", "Câu 1")
-    Call repaceTextNoWildcards("Bài 1:", "Câu 1.")
-    Call repaceTextNoWildcards("Câu 1", "Câu 1.")
-    Call repaceTextNoWildcards("Câu 1..", "Câu 1.")
-    Call repaceTextNoWildcards("Câu 1.", "}^p\end{ex}^p^p\begin{ex}^p")
+    Call ReplaceTextNoWildcards("Câu ^#^#^#", "Câu 1")
+    Call ReplaceTextNoWildcards("Câu ^#^#", "Câu 1")
+    Call ReplaceTextNoWildcards("Câu ^#", "Câu 1")
+    Call ReplaceTextNoWildcards("Câu 1:", "Câu 1.")
+    Call ReplaceTextNoWildcards("Bài ^#^#^#", "Câu 1")
+    Call ReplaceTextNoWildcards("Bài ^#^#", "Câu 1")
+    Call ReplaceTextNoWildcards("Bài ^#", "Câu 1")
+    Call ReplaceTextNoWildcards("Bài 1:", "Câu 1.")
+    Call ReplaceTextNoWildcards("Câu 1", "Câu 1.")
+    Call ReplaceTextNoWildcards("Câu 1..", "Câu 1.")
+    Call ReplaceTextNoWildcards("Câu 1.", "}^p\end{ex}^p^p\begin{ex}^p")
+    
+    Call ReplaceTextNoWildcards("{@\True.", "{@\True")
+    Call ReplaceTextNoWildcards("{@\True .", "{@\True")
+    
     Selection.EndKey Unit:=wdStory
     Selection.TypeParagraph
     Selection.TypeBackspace
-    
     Call T4L_ChuanHoa
     Call T4L_ChuanHoa
+
 End Sub
 
-Public Function T4LW2T(ByVal param As String, ByVal param1 As String)
-    Call T4L_Word2Ex_test
-    Call Toogle
-    Call T4L_ChuanHoaLaTeX
-    Call T4L_ChuanHoa
-    Call T4L_ChuanHoa
-End Function
-
-Public Function T4LW2T_Convert(ByVal param As String, ByVal param1 As String)
-    Call T4L_Word2Ex_test
-    Call ConvertEquation
-    Call T4L_ChuanHoaLaTeX
-    Call T4L_ChuanHoa
-    Call T4L_ChuanHoa
-End Function
-
-Public Function T4LT2W(ByVal param As String, ByVal param1 As String)
-    Selection.WholeStory
-    Application.Run MacroName:="MTCommand_TeXToggle"
-    Call repaceTextNoWildcards("^l", "^p")
-    Call repaceTextNoWildcards("^p^p", "^p")
-    Call repaceTextNoWildcards("^p^p", "^p")
-    Call repaceTextNoWildcards(".\\", ".")
-    Call TextbfAndTextit
-
-End Function
-
-Public Function T4L_AutoTab(ByVal param As String, ByVal param1 As String)
-    Call Auto_Tab
-End Function
-
-Sub Auto_Tab()
-Application.ScreenUpdating = False
-Call Do_cot
-Call Thay_A
-End Sub
-Private Sub Do_cot()
-Selection.Find.ClearFormatting
-Selection.Find.Replacement.ClearFormatting
-With Selection.Find
-    .text = "(^13)([ABCD])(.)"
-        .Replacement.text = "\1\2\3."
-        .MatchCase = True
-        .Wrap = wdFindContinue
-        .Execute Replace:=wdReplaceAll, Forward:=True, MatchWildcards:=True
-End With
-Set danhsach = ActiveDocument.Content
-Dim x_a, x_b, x_c, x_d, x_o As Double
-Tiep:
-danhsach.Find.Execute findText:="A..", Forward:=True
-If danhsach.Find.Found = True Then
-    danhsach.Select
-    Selection.text = "#"
-    Selection.EndKey Unit:=wdLine
-    x_a = CDbl(Selection.Information(wdHorizontalPositionRelativeToPage))
-    Selection.MoveDown Unit:=wdParagraph, Count:=1
-    Selection.EndKey Unit:=wdLine
-    x_b = CDbl(Selection.Information(wdHorizontalPositionRelativeToPage))
-    Selection.MoveDown Unit:=wdParagraph, Count:=1
-    Selection.EndKey Unit:=wdLine
-    x_c = CDbl(Selection.Information(wdHorizontalPositionRelativeToPage))
-    Selection.MoveDown Unit:=wdParagraph, Count:=1
-    Selection.EndKey Unit:=wdLine
-    x_d = CDbl(Selection.Information(wdHorizontalPositionRelativeToPage))
-    x_o = solon(x_a, solon(x_b, solon(x_c, x_d)))
-    Selection.HomeKey Unit:=wdLine
-    Selection.MoveUp Unit:=wdParagraph, Count:=3
-    If (x_o < CDbl(180)) Then
-    Selection.ParagraphFormat.TabStops.ClearAll
-    Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(6), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
-    Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(10), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
-    Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(14), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
-    Selection.TypeText text:=""
-    Selection.MoveDown Unit:=wdParagraph, Count:=1
-    Selection.TypeBackspace
-    Selection.TypeText text:=vbTab
-    Selection.MoveDown Unit:=wdParagraph, Count:=1
-    Selection.TypeBackspace
-    Selection.TypeText text:=vbTab
-    Selection.MoveDown Unit:=wdParagraph, Count:=1
-    Selection.TypeBackspace
-    Selection.TypeText text:=vbTab
-    Else
-        If (x_o < CDbl(310)) Then
-        Selection.ParagraphFormat.TabStops.ClearAll
-        Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(10), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
-            Selection.TypeText text:=""
-            Selection.MoveDown Unit:=wdParagraph, Count:=1
-            Selection.TypeBackspace
-            Selection.TypeText text:=vbTab
-            Selection.MoveDown Unit:=wdParagraph, Count:=1
-        Selection.ParagraphFormat.TabStops.Add Position:=CentimetersToPoints(10), Alignment:=wdAlignTabLeft, Leader:=wdTabLeaderSpaces
-            Selection.TypeText text:=""
-            Selection.MoveDown Unit:=wdParagraph, Count:=1
-            Selection.TypeBackspace
-            Selection.TypeText text:=vbTab
-        Else
-        Selection.ParagraphFormat.TabStops.ClearAll
-            Selection.TypeText text:=""
-            Selection.MoveDown Unit:=wdParagraph, Count:=1
-            Selection.TypeText text:=""
-            Selection.MoveDown Unit:=wdParagraph, Count:=1
-            Selection.TypeText text:=""
-            Selection.MoveDown Unit:=wdParagraph, Count:=1
-            Selection.TypeText text:=""
-            Selection.MoveDown Unit:=wdParagraph, Count:=1
-        End If
-    End If
-GoTo Tiep
-Else
-Exit Sub
-End If
-End Sub
-Private Sub Thay_A()
-    Options.DefaultHighlightColorIndex = wdYellow
-    Selection.Find.ClearFormatting
-    Selection.Find.Replacement.ClearFormatting
-    With Selection.Find
-        .text = "#"
-        .Replacement.text = "A.."
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWildcards = True
-        .Execute Replace:=wdReplaceAll
-    End With
-    Selection.Find.Replacement.Font.Underline = wdUnderlineNone
-    With Selection.Find
-        .text = "^t"
-        .Replacement.text = "^t"
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWildcards = False
-        .Execute Replace:=wdReplaceAll
-    End With
-    With Selection.Find
-        .text = "."
-        .Replacement.text = "."
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWildcards = False
-        .Execute Replace:=wdReplaceAll
-    End With
-    With Selection.Find
-        .text = " "
-        .Replacement.text = " "
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWildcards = False
-        .Execute Replace:=wdReplaceAll
-    End With
-    Selection.Find.ClearFormatting
-    Selection.Find.Font.Underline = wdUnderlineNone
-    Selection.Find.Replacement.ClearFormatting
-        With Selection.Find
-        .text = "([A-D]..)"
-        .Replacement.text = "\1"
-        .Replacement.Font.Bold = True
-        .Replacement.Font.Color = wdColorBlue
-        .Forward = True
-        .Wrap = wdFindContinue
-        .MatchCase = True
-        .Format = True
-        .MatchWildcards = True
-        .Execute Replace:=wdReplaceAll
-    End With
-    Selection.Find.ClearFormatting
-    Selection.Find.Font.Underline = wdUnderlineSingle
-    Selection.Find.Replacement.ClearFormatting
-        With Selection.Find
-        .text = "([A-D])"
-        .Replacement.text = "\1"
-        .Replacement.Font.Bold = True
-        .Replacement.Font.Color = wdColorRed
-        .Replacement.Font.Underline = wdUnderlineSingle
-        .Replacement.Highlight = False
-        .Forward = True
-        .Wrap = wdFindContinue
-        .MatchCase = True
-        .Format = True
-        .MatchWildcards = True
-        .Execute Replace:=wdReplaceAll
-    End With
-    Selection.Find.ClearFormatting
-    Selection.Find.Replacement.ClearFormatting
-        With Selection.Find
-        .text = ".."
-        .Replacement.text = ". "
-        .Replacement.Font.Bold = True
-        .Forward = True
-        .Wrap = wdFindContinue
-        .MatchCase = True
-        .Format = True
-        .MatchWildcards = False
-        .Execute Replace:=wdReplaceAll
-    End With
-    With Selection.Find
-        .text = "^13"
-        .Replacement.text = "^p"
-        .Replacement.Font.Bold = False
-        .Replacement.Font.Color = wdColorAutomatic
-        .Forward = True
-        .Wrap = wdFindContinue
-        .MatchCase = True
-        .Format = True
-        .MatchWildcards = False
-        .Execute Replace:=wdReplaceAll
-    End With
-    Selection.Find.ClearFormatting
-    Selection.Find.Replacement.ClearFormatting
-    With Selection.Find
-        .Highlight = True
-        .text = "^t"
-        .Replacement.text = "^t"
-        .Replacement.Highlight = False
-        .Forward = True
-        .Wrap = wdFindContinue
-        .Format = True
-        .MatchCase = False
-        .MatchWildcards = False
-        .Execute Replace:=wdReplaceAll
-    End With
-    With Selection.Find
-        .text = "^32^32"
-        .Replacement.text = " "
-        .Forward = False
-        .Wrap = wdFindContinue
-        .Format = False
-        .MatchCase = False
-        .MatchWildcards = False
-        Do While .Execute
-            .Execute Replace:=wdReplaceAll
-        Loop
-    End With
-End Sub
-
-Private Function solon(ByVal a As Double, ByVal b As Double) As Double
-    Dim x As Double
-    If a > b Then
-        x = a
-    Else
-        x = b
-    End If
-solon = x
-End Function
+' ------------------Process Italic, Bold, Underline------------------'
+'>>>>> Replace Format <<<<<<'
 Sub ReplaceBold(textFind As String)
-'
-' Macro1 Macro
-'
-'
     Selection.Find.ClearFormatting
     Selection.Find.Font.Bold = True
     Selection.Find.Replacement.ClearFormatting
@@ -598,10 +229,6 @@ Sub ReplaceBold(textFind As String)
 End Sub
 
 Sub ReplaceUnderline(textFind As String)
-'
-' Macro1 Macro
-'
-'
     Selection.Find.ClearFormatting
     Selection.Find.Font.Underline = True
     Selection.Find.Replacement.ClearFormatting
@@ -624,26 +251,90 @@ Sub ReplaceUnderline(textFind As String)
     End With
     Selection.Find.Execute Replace:=wdReplaceAll
 End Sub
+Sub ReplaceItalic(textFind As String)
+    Selection.Find.ClearFormatting
+    Selection.Find.Font.Italic = True
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+        .Underline = wdUnderlineNone
+    End With
+    With Selection.Find
+        .text = textFind
+        .Replacement.text = textFind
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
 
 Sub ReplaceFormat()
-Call ReplaceBold("^p\choice^p{@")
-Call ReplaceBold("^p}^p\end{ex}^p^p\begin{ex}^p")
-Call ReplaceBold("}^p\end{ex}^p^p\begin{ex}^p")
-Call ReplaceBold("}^p\end{ex}^p\begin{ex}^p")
-Call ReplaceBold("}^p\doantrich{")
-Call ReplaceBold("@}^p{@")
-Call ReplaceBold("{@")
-Call ReplaceBold("@}")
-Call ReplaceBold("\end{ex}")
-Call ReplaceBold("\begin{ex}")
-Call ReplaceBold("\True")
-Call ReplaceUnderline("\True")
-Call ReplaceBold("@}^p\loigiai{")
-Call ReplaceBold("^p")
-Call ReplaceBold("^t")
-Call ReplaceBold("^l")
-
+    Call ReplaceBold("^p}^p\end{ex}^p^p\begin{ex}^p")
+    Call ReplaceBold("}^p\end{ex}^p^p\begin{ex}^p")
+    Call ReplaceBold("}^p\end{ex}^p\begin{ex}^p")
+    Call ReplaceBold("\end{ex}")
+    Call ReplaceBold("\begin{ex}")
+    Call ReplaceBold("^p\choice^p{@")
+    Call ReplaceBold("}^p\doantrich{")
+    Call ReplaceBold("@}^p\loigiai{")
+    Call ReplaceBold("\loigiai{")
+    Call ReplaceBold("@}^p{@")
+    Call ReplaceBold("{@")
+    Call ReplaceBold("@}")
+    Call ReplaceBold("\True")
+    Call ReplaceBold("^p")
+    Call ReplaceBold("^t")
+    Call ReplaceBold("^l")
+    Call ReplaceBold(" ")
+    Call ReplaceBold(".")
+    '---------------------------------------------------'
+    Call ReplaceUnderline("^p}^p\end{ex}^p^p\begin{ex}^p")
+    Call ReplaceUnderline("}^p\end{ex}^p^p\begin{ex}^p")
+    Call ReplaceUnderline("}^p\end{ex}^p\begin{ex}^p")
+    Call ReplaceUnderline("\end{ex}")
+    Call ReplaceUnderline("\begin{ex}")
+    Call ReplaceUnderline("^p\choice^p{@")
+    Call ReplaceUnderline("}^p\doantrich{")
+    Call ReplaceUnderline("@}^p\loigiai{")
+    Call ReplaceUnderline("\loigiai{")
+    Call ReplaceUnderline("@}^p{@")
+    Call ReplaceUnderline("{@")
+    Call ReplaceUnderline("@}")
+    Call ReplaceUnderline("\True")
+    Call ReplaceUnderline("^p")
+    Call ReplaceUnderline("^t")
+    Call ReplaceUnderline("^l")
+    Call ReplaceUnderline(" ")
+    Call ReplaceUnderline(".")
+    '---------------------------------------------------'
+    Call ReplaceItalic("^p}^p\end{ex}^p^p\begin{ex}^p")
+    Call ReplaceItalic("}^p\end{ex}^p^p\begin{ex}^p")
+    Call ReplaceItalic("}^p\end{ex}^p\begin{ex}^p")
+    Call ReplaceItalic("\end{ex}")
+    Call ReplaceItalic("\begin{ex}")
+    Call ReplaceItalic("^p\choice^p{@")
+    Call ReplaceItalic("}^p\doantrich{")
+    Call ReplaceItalic("@}^p\loigiai{")
+    Call ReplaceItalic("\loigiai{")
+    Call ReplaceItalic("@}^p{@")
+    Call ReplaceItalic("{@")
+    Call ReplaceItalic("@}")
+    Call ReplaceItalic("\True")
+    Call ReplaceItalic("^p")
+    Call ReplaceItalic("^t")
+    Call ReplaceItalic("^l")
+    Call ReplaceItalic(" ")
+    Call ReplaceItalic(".")
 End Sub
+
+'>>>>> Format2Latex <<<<<<'
 Sub Bold2Latex()
     Selection.Find.ClearFormatting
     Selection.Find.Font.Bold = True
@@ -699,16 +390,16 @@ Sub Underline2Latex()
     End With
     Selection.Find.Execute Replace:=wdReplaceAll
 End Sub
-
 Sub BIU2Latex()
     Call Bold2Latex
     Call Italic2Latex
     Call Underline2Latex
 End Sub
 
+' ------------------Main------------------'
 Sub W2T_Tool()
     Call ConvertTablesToImages
-    Call T4L_Word2Ex_test
+    Call T4L_MainConvert
     Call ReplaceFormat
     Call BIU2Latex
     Call ConvertEquation

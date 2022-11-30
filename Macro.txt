@@ -113,6 +113,8 @@ Sub T4L_ChuanHoa()
     Call ReplaceTextNoWildcards("}^p\end{ex}", "^p}^p\end{ex}")
     Call ReplaceTextNoWildcards("^p^p}^p\end{ex}", "^p}^p\end{ex}")
     Call ReplaceTextNoWildcards(" ^p@}", "@}")
+    Call ReplaceTextNoWildcards(".^p@}", "@}")
+    Call ReplaceTextNoWildcards("^p@}", "@}")
     Call ReplaceTextNoWildcards(".}", "}")
 End Sub
 
@@ -176,10 +178,8 @@ Sub T4L_MainConvert()
     Call ReplaceTextNoWildcards("^pL" & ChrW(7901) & "i gi" & ChrW(7843) & "i", "@}^p\loigiai{")
     Call ReplaceTextNoWildcards("L" & ChrW(7901) & "i gi" & ChrW(7843) & "i", "@}^p\loigiai{")
     Call ReplaceTextNoWildcards("L" & ChrW(417) & ChrW(768) & "i gia" & ChrW(777) & "i", "@}^p\loigiai{")
-    Call ReplaceTextNoWildcards(ChrW(272) & "oa" & ChrW(803) & "n tri" & ChrW(769 _
-) & "ch", "}^p\doantrich{")
-    Call ReplaceTextNoWildcards(ChrW(273) & "oa" & ChrW(803) & "n tri" & ChrW(769 _
-) & "ch", "}^p\doantrich{")
+    Call ReplaceTextNoWildcards(ChrW(272) & "oa" & ChrW(803) & "n tri" & ChrW(769) & "ch", "}^p\doantrich{")
+    Call ReplaceTextNoWildcards(ChrW(273) & "oa" & ChrW(803) & "n tri" & ChrW(769) & "ch", "}^p\doantrich{")
     Call ReplaceTextNoWildcards("Câu ^#^#^#", "Câu 1")
     Call ReplaceTextNoWildcards("Câu ^#^#", "Câu 1")
     Call ReplaceTextNoWildcards("Câu ^#", "Câu 1")
@@ -407,4 +407,114 @@ Sub W2T_Tool()
     Call T4L_ChuanHoaLaTeX
     Call T4L_ChuanHoa
     Call T4L_ChuanHoa
+End Sub
+Sub Macro1()
+'
+' Macro1 Macro
+'
+'
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+        .Underline = wdUnderlineNone
+        .SmallCaps = False
+        .AllCaps = False
+        .Color = wdColorAutomatic
+    End With
+    With Selection.Find
+        .text = ".}"
+        .Replacement.text = "}"
+        .Forward = True
+        .Wrap = wdFindAsk
+        .Format = True
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Copy
+    Selection.Copy
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+        .Underline = wdUnderlineNone
+        .SmallCaps = False
+        .AllCaps = False
+        .Color = wdColorAutomatic
+    End With
+    With Selection.Find
+        .text = ".}"
+        .Replacement.text = "}"
+        .Forward = True
+        .Wrap = wdFindAsk
+        .Format = True
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+End Sub
+Sub Macro2()
+'
+' Macro2 Macro
+'
+'
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+        .Underline = wdUnderlineNone
+        .SmallCaps = False
+        .AllCaps = False
+        .Color = wdColorAutomatic
+    End With
+    With Selection.Find
+        .text = "L" & ChrW(7901) & "i gi" & ChrW(7843) & "i"
+        .Replacement.text = "\sdshkfasdf"
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+End Sub
+Sub Macro3()
+'
+' Macro3 Macro
+'
+'
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find.Replacement.Font
+        .Bold = False
+        .Italic = False
+        .Underline = wdUnderlineNone
+        .SmallCaps = False
+        .AllCaps = False
+        .Color = wdColorAutomatic
+    End With
+    With Selection.Find
+        .text = "^pL" & ChrW(7901) & "i gi" & ChrW(7843) & "i"
+        .Replacement.text = "@}^p\loigiai{"
+        .Forward = True
+        .Wrap = wdFindContinue
+        .Format = True
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
 End Sub

@@ -76,7 +76,10 @@ def Fix_Latex(tex_input, excerpt_detect, paragraph_input):
         print("Đã sửa " + tex_input +" thành \\doantrich{")
         tex_input = "\doantrich{"
     if(tex_input != "\\begin{ex}" and tex_input != "\\end{ex}" and tex_input != "\\choice" and tex_input != "\\loigiai{" and tex_input != "\\doantrich{" and tex_input !="}" and tex_input !="" and ('@}' not in tex_input)):
-        tex_input = tex_input + "\\\\"
+        if(tex_input.endswith("\\\\") or tex_input.endswith("\\\\ ") or tex_input.endswith("\\begin{aligned}") or tex_input.endswith("\\begin{matrix}")):
+            pass
+        else:
+            tex_input = tex_input + "\\\\"
     tex_input = tex_input + "\n"
     return tex_input, paragraph_input
 

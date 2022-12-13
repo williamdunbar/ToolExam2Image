@@ -11,10 +11,22 @@ from PIL import Image
 
 path_docx_file = "./Macro.docx" 
 
+def createFolderContainPicture():
+    folderPicture = "./Picture/word/media"
+    if(path.exists(folderPicture) == False):
+        os.mkdir(folderPicture)
+
 def checkWidthImage(imagePath):
     img = Image.open(imagePath)
     # print(img.size[1] )
-    return "" if (img.size[0] < 400) else "width=\\textwidth"
+    if(img.size[0] < 500):
+        return ""
+    elif(img.size[0] >= 500 and img.size[0] <=800):
+        return "scale=0.5"
+    elif(img.size[0] > 800 and img.size[0] <=1000):
+        return "scale=0.3"
+    else:
+        return "width=\\textwidth"
 
 def hasImage(par):
     """get all of the images in a paragraph 
@@ -42,7 +54,7 @@ def num_sort(test_string):
 def Extract_Image():
     imagenames = []
     i = 0
-
+    createFolderContainPicture()
     #Xóa ảnh cũ trong "Picture/word/media/"
     dir = 'Picture/word/media/'
     for f in os.listdir(dir):

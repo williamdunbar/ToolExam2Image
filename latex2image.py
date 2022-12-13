@@ -50,10 +50,6 @@ def question_crop(file):
     img = Image.open(file)
     width_0, height_0 = img.size
     new_image = add_margin(img,1160-width_0)
-    # width_1 = 840
-    # height_1 = math.trunc(height_0 * ratio)
-    # print(str(width_1)+" "+ str(height_1))
-    # cropped_img = new_image.resize((width_1,height_1))
     new_image.save(file)
 
 def save_images(images_name,pdf_path,images_path,type):

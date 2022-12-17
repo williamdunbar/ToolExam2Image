@@ -71,12 +71,14 @@ def Extract_Image():
             #Xử lỹ các ảnh của đuôi emf
             if imagename.endswith("emf") :
                 i = i+1
-                newImageNames = "table"+ str(i) + ".jpg"
+                # newImageNames = "table"+ str(i) + ".jpg"
+                newImageNames = imagename.split('.')[0] + ".jpg"
                 Image.open("Picture/word/media/"+imagename).save("Picture/word/media/"+newImageNames)
                 imagename = newImageNames
 
             imagenames.append(imagename)
-
+            print(imagename)
+    imagenames.sort()
     return imagenames
 
 def Fix_Latex(tex_input, excerpt_detect, paragraph_input):

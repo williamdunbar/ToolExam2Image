@@ -1,5 +1,5 @@
 from time import sleep
-# import sys
+import sys
 import win32com.client as win32
 import argparse
 import os
@@ -45,7 +45,7 @@ def RunMacro(doc_path):
             doc_path = ["."]
 
         wd = win32.gencache.EnsureDispatch("Word.Application")
-        # print(sys.modules[wd.__module__].__file__)
+        print(sys.modules[wd.__module__].__file__)
         wd.Visible = False
         print(str(doc_path))
         os.startfile(str(doc_path))

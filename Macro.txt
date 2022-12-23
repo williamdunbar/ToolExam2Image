@@ -92,12 +92,20 @@ Sub replaceTextUnderline(findText As String, replaceText As String)
     Selection.Find.Execute Replace:=wdReplaceAll
 End Sub
 ' ------------------Standard latex------------------'
-Sub T4L_ChuanHoaLaTeX()
+Sub T4L_ChuanHoaLaTeX_A()
     Call ReplaceTextNoWildcards("\[", "$")
     Call ReplaceTextNoWildcards("\]", "$")
     Call ReplaceTextNoWildcards("%", "\%")
     Call ReplaceTextNoWildcards("{align}", "{aligned}")
-'    Call ReplaceTextNoWildcards("\frac", "\dfrac")
+    Call ReplaceTextNoWildcards("\frac", "\dfrac")
+    Call ReplaceTextNoWildcards("\backslash", "\setminus")
+    Call ReplaceTextNoWildcards("{\AA}$", "${\AA}")
+End Sub
+Sub T4L_ChuanHoaLaTeX_B()
+    Call ReplaceTextNoWildcards("\[", "$")
+    Call ReplaceTextNoWildcards("\]", "$")
+    Call ReplaceTextNoWildcards("%", "\%")
+    Call ReplaceTextNoWildcards("{align}", "{aligned}")
     Call ReplaceTextNoWildcards("\backslash", "\setminus")
     Call ReplaceTextNoWildcards("{\AA}$", "${\AA}")
 End Sub
@@ -400,14 +408,26 @@ Sub BIU2Latex()
 End Sub
 
 ' ------------------Main------------------'
-Sub W2T_Tool()
+Sub W2T_Tool_A()
     Call ConvertTablesToImages
     Call T4L_MainConvert
     Call ReplaceFormat
     Call BIU2Latex
     Call ConvertEquation
     Call Toogle
-    Call T4L_ChuanHoaLaTeX
+    Call T4L_ChuanHoaLaTeX_A
+    Call T4L_ChuanHoa
+    Call T4L_ChuanHoa
+End Sub
+' ------------------Main------------------'
+Sub W2T_Tool_B()
+    Call ConvertTablesToImages
+    Call T4L_MainConvert
+    Call ReplaceFormat
+    Call BIU2Latex
+    Call ConvertEquation
+    Call Toogle
+    Call T4L_ChuanHoaLaTeX_B
     Call T4L_ChuanHoa
     Call T4L_ChuanHoa
 End Sub

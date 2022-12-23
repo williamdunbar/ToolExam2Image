@@ -40,7 +40,7 @@ def RunMacro(doc_path):
     try:
         recurse = False
         save_as_suffix = "_done"
-        macro_name = "W2T_Tool"
+        macro_name = "W2T_Tool_A"
         if len(doc_path) < 1:
             doc_path = ["."]
 

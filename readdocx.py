@@ -66,7 +66,7 @@ def Extract_Image():
     for file in z.filelist:
         if file.filename.startswith('word/media/') :
             # print(file.file_size)
-            imagename = str(file.filename).split('/',2)[2]
+            imagename = str(file.filename).split('/', 2)[2]
             z.extract(path="./Picture", member= file.filename)
             #Xử lỹ các ảnh của đuôi emf
             if imagename.endswith("emf") :

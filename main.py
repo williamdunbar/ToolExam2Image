@@ -9,6 +9,7 @@ from latex2image import Latex2Image
 
 def Excute_Macro(path_docx):
     # macro_run = "W2T_Tool"
+    
     name_docx_file = (path_docx.split(sep="\\")[-1])[:-5] or "Version2"
 
     if(os.path.exists("./Macro.docx") == True):

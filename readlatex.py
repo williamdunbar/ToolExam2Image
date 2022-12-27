@@ -47,22 +47,23 @@ def Read_Latex():
                     excerpt = temp_excerpt
                     temp_reference = (re.findall(r'\\loigiai{(.*?)}\n\\end{ex}', excercise, re.S) or [""])[0]
                 
-                    # print(temp_answer)
-                if (temp_answer != ""):
+                    print(temp_answer)
+                try:
                     question = (re.findall(r'\\begin{ex}\n(.*?)\n\\choice', excercise, re.S) or [""])[0]
                     multi_choice = (re.findall(r'\{\@(.*?)\@\}\n', temp_answer, re.S)) #re.S giúp cho regex đọc được các nội dung có \n
-                    # print(multi_choice)
                     A = multi_choice[0]
                     B = multi_choice[1]
                     C = multi_choice[2]
                     D = multi_choice[3]
                     # reference = temp_reference.split("\n",2)[2]
                     reference = temp_reference
-                else:
+                except:
+                    print(">>>Đây là câu tự luận<<<")
                     question = (re.findall(r'\\begin{ex}\n(.*?)\n\\choice', excercise, re.S) or [""])[0]
                     A,B,C,D = ["","","",""]
                     reference = temp_reference
-                    # print (temp_reference)
+                    
+                    
                 List_Excercise.append(Excercise(question,A,B,C,D,reference,excerpt))
     except Exception as err:
         print("Error ReadLatex: "+str(err))

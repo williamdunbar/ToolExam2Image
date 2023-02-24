@@ -126,10 +126,18 @@ Sub T4L_ChuanHoa()
     Call ReplaceTextNoWildcards("^p@}", "@}")
     Call ReplaceTextNoWildcards(".}", "}")
 End Sub
+Sub ConvertOtherSymbol()
+' ------------------Convert other symbols------------------'
+    Call ReplaceTextNoWildcards(ChrW(9794), "$\male$ ")
+    Call ReplaceTextNoWildcards(ChrW(9792), "$\female$ ")
+    Call ReplaceTextNoWildcards(ChrW(8594), "$\rightarrow$ ")
+    Call ReplaceTextNoWildcards("×", "$\times$ ")
+End Sub
 
 Sub T4L_MainConvert()
     Selection.WholeStory
     Selection.Range.ListFormat.ConvertNumbersToText
+    Call ConvertOtherSymbol
     Call ReplaceTextNoWildcards("    ", " ")
     Call ReplaceTextNoWildcards("    .", " ")
     Call ReplaceTextNoWildcards("   ", " ")
@@ -171,11 +179,13 @@ Sub T4L_MainConvert()
     Call ReplaceTextNoWildcards("^tB.", "@}^p{@")
     Call ReplaceTextNoWildcards("^pB.", "@}^p{@")
     Call ReplaceTextNoWildcards("^p B.", "@}^p{@")
+    Call ReplaceTextNoWildcards("B.", "@}^p{@")
     
     Call ReplaceTextNoWildcards("^p^tC.", "@}^p{@")
     Call ReplaceTextNoWildcards("^tC.", "@}^p{@")
     Call ReplaceTextNoWildcards("^pC.", "@}^p{@")
     Call ReplaceTextNoWildcards("^p C.", "@}^p{@")
+    Call ReplaceTextNoWildcards("C.", "@}^p{@")
     
     Call ReplaceTextNoWildcards("^t^t^tD.", "@}^p{@")
     Call ReplaceTextNoWildcards("^t^tD.", "@}^p{@")
@@ -183,6 +193,7 @@ Sub T4L_MainConvert()
     Call ReplaceTextNoWildcards("^tD.", "@}^p{@")
     Call ReplaceTextNoWildcards("^pD.", "@}^p{@")
     Call ReplaceTextNoWildcards("^p D.", "@}^p{@")
+    Call ReplaceTextNoWildcards("D.", "@}^p{@")
     
     Call ReplaceTextNoWildcards(ChrW(272) & "a" & ChrW(769) & "p a" & ChrW(769) & "n:", "\choice^p{@")
     Call ReplaceTextNoWildcards(ChrW(272) & "áp án:", "\choice^p{@")
@@ -430,4 +441,27 @@ Sub W2T_Tool_B()
     Call T4L_ChuanHoaLaTeX_B
     Call T4L_ChuanHoa
     Call T4L_ChuanHoa
+End Sub
+Sub Macro1()
+'
+' Macro1 Macro
+'
+'
+    Selection.Find.ClearFormatting
+    Selection.Find.Replacement.ClearFormatting
+    With Selection.Find
+        .text = "×"
+        .Replacement.text = "\times"
+        .Forward = True
+        .Wrap = wdFindAsk
+        .Format = False
+        .MatchCase = False
+        .MatchWholeWord = False
+        .MatchWildcards = False
+        .MatchSoundsLike = False
+        .MatchAllWordForms = False
+    End With
+    Selection.Find.Execute Replace:=wdReplaceAll
+    ShowVisualBasicEditor = True
+    ActiveWindow.Close
 End Sub

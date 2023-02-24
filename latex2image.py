@@ -73,7 +73,7 @@ def create_image_from_latex(image_name,latex,folder_data, folder_exercise, type)
 
     print(latex)
     f=open("Temp.tex","w+", encoding= "utf8")
-    f.write("\\documentclass[preview,border=1pt]{standalone}\n\\usepackage{amsmath,amssymb}\n\\usepackage{charter}\n\\usepackage{indentfirst}\n\\usepackage[utf8]{vietnam}\n\\usepackage{longtable}\n\\usepackage{multirow}\n\\usepackage{mathrsfs}\n\\usepackage{tabvar}\n\\usepackage{ifpdf}\n\\begin{document}\n")
+    f.write("\\documentclass[preview,border=1pt]{standalone}\n\\usepackage{amsmath,amssymb}\n\\usepackage{charter}\n\\usepackage{indentfirst}\n\\usepackage[utf8]{vietnam}\n\\usepackage{longtable}\n\\usepackage{multirow}\n\\usepackage{mathrsfs}\n\\usepackage{tabvar}\n\\usepackage{ifpdf}\n\\usepackage{wasysym}\n\\begin{document}\n")
     f.write(latex+"\n")
     f.write(r"\end{document}")
     f.close()

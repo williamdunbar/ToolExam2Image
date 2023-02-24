@@ -29,10 +29,6 @@ def checkWidthImage(imagePath):
         return "width=\\textwidth"
 
 def hasImage(par):
-    """get all of the images in a paragraph 
-    :param par: a paragraph object from docx
-    :return: a list of r:embed 
-    """
     ids = []
     root = ET.fromstring(par._p.xml)
     namespace = {
@@ -51,16 +47,23 @@ def hasImage(par):
 def num_sort(test_string):
     return list(map(int, re.findall(r'\d+', test_string)))[0]
 
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
+
+
 def Extract_Image():
     imagenames = []
     i = 0
     createFolderContainPicture()
-    #Xóa ảnh cũ trong "Picture/word/media/"
+    # Xóa ảnh cũ trong "Picture/word/media/"
     dir = 'Picture/word/media/'
     for f in os.listdir(dir):
         os.remove(os.path.join(dir, f))
 
-    #Dùng thư viện zipfile extract ảnh 
+    # Dùng thư viện zipfile extract ảnh 
     z = zipfile.ZipFile(path_docx_file)
 
     for file in z.filelist:
@@ -71,14 +74,15 @@ def Extract_Image():
             #Xử lỹ các ảnh của đuôi emf
             if imagename.endswith("emf") :
                 i = i+1
-                # newImageNames = "table"+ str(i) + ".jpg"
                 newImageNames = imagename.split('.')[0] + ".jpg"
                 Image.open("Picture/word/media/"+imagename).save("Picture/word/media/"+newImageNames)
                 imagename = newImageNames
-
+            #Xử lý các ảnh có đuôi wmf
+            if imagename.endswith("wmf"):
+                continue
             imagenames.append(imagename)
             print(imagename)
-    imagenames.sort()
+    imagenames.sort(key=natural_keys)
     return imagenames
 
 def Fix_Latex(tex_input, excerpt_detect, paragraph_input):
